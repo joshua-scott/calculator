@@ -1,0 +1,76 @@
+@import "normalize";
+@import url('https://fonts.googleapis.com/css?family=Assistant:200,300');
+
+$background: #9DDAFC;
+$background-alt: #7E8CA3;
+$display: #113B51;
+$button: #477187;
+$button-alt: #AA7639;
+$button-text: #FAE25D;
+$whiteish: #e2e2e2;
+// $black: #1c1c1c;
+// $dark-grey: #525258;
+// $orange: #ff6929;
+
+.wrapper {
+  background: $background-alt;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.calculator {
+  font-family: 'Assistant', sans-serif;
+  font-weight: 200;
+  display: flex;
+  flex-direction: column;
+  max-width: 220px;
+  margin: auto;
+  .display {
+    flex: 1 1 100%;
+    height: 80px;
+    background: $display;
+    color: $whiteish;
+    display: flex;
+    flex-direction: column;
+    text-align: right;
+    padding-right: 15px;
+    .previous-input {
+      flex: 1 1;
+      padding-top: 10px;
+      font-size: 1.1em;
+    }
+    .current-input {
+      flex: 2 1;
+      padding-top: 8px;
+      font-size: 2em;
+      font-weight: 300;
+    }
+  }
+  .buttons {
+    display: flex;
+    flex-wrap: wrap;
+    button {
+      font-family: 'Assistant', sans-serif;
+      font-weight: 300;
+      flex: 1 1 25%;
+      border: none;
+      height: 45px;
+      background: $button;
+      color: $button-text;
+      transition: 0.5s ease-out;
+      &:hover {
+        cursor: pointer;
+        background: $button-alt;
+      }
+      &.num {
+        color: $whiteish;
+      }
+      &.double {
+        flex: 1 1 50%;
+      }
+    }
+  }
+}
