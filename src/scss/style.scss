@@ -1,6 +1,5 @@
 @import "normalize";
 @import url('https://fonts.googleapis.com/css?family=Assistant:200,300');
-
 $background: #9DDAFC;
 $background-alt: #7E8CA3;
 $display: #113B51;
@@ -11,7 +10,6 @@ $whiteish: #e2e2e2;
 // $black: #1c1c1c;
 // $dark-grey: #525258;
 // $orange: #ff6929;
-
 .wrapper {
   background: $background-alt;
   height: 100vh;
@@ -37,12 +35,12 @@ $whiteish: #e2e2e2;
     flex-direction: column;
     text-align: right;
     padding-right: 15px;
-    .previous-input {
+    .helper-display {
       flex: 1 1;
       padding-top: 10px;
       font-size: 1.1em;
     }
-    .current-input {
+    .main-display {
       flex: 2 1;
       padding-top: 8px;
       font-size: 2em;
