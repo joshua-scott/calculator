@@ -1,23 +1,35 @@
 const mainDisplay = document.querySelector('.main-display');
 const helperDisplay = document.querySelector('.helper-display');
+const allButtons = document.querySelectorAll('.calculator button');
 const buttons = {
-  digit: document.querySelectorAll('button.digit'),
-  operator: document.querySelectorAll('button.operator'),
-  clear: document.querySelector('button.clear'),
-  neg: document.querySelector('button.neg'),
-  equals: document.querySelector('button.equals')
+  digit: document.querySelectorAll('.digit'),
+  operator: document.querySelectorAll('.operator'),
+  clear: document.querySelector('.clear'),
+  neg: document.querySelector('.neg'),
+  equals: document.querySelector('.equals')
 };
 
 
 function handleDigit() {
-  if (mainDisplay.textContent.length > 11) return;
-  if (Number(mainDisplay.textContent) === 0) {
-    mainDisplay.textContent = this.textContent;
-  } else if (this.textContent === '.' && mainDisplay.textContent.includes('.')) {
-    return;
-  } else {
-    mainDisplay.textContent += this.textContent;
-  }
+  // If the user said it's negative already, we should respect that decision
+  const negativeOutput = checkIfNegative(mainDisplay);
+
+  const digit = this.textContent;
+  // Is this a brand new number, or add it to the end of what's already there?
+  const toDisplay = freshStart(mainDisplay) ? digit : mainDisplay.textContent + digit;
+
+  mainDisplay.textContent = toDisplay.slice(0, 11); // Ensure it's not too long
+  if (negativeOutput) toggleNegative();
+}
+
+
+function freshStart(display) {
+  return (display.classList.contains('answer') || (display.textContent == 0 && !display.textContent.includes('.')));
+}
+
+
+function checkIfNegative(display) {
+  return display.textContent.startsWith('-') && mainDisplay.classList.contains('answer');
 }
 
 
@@ -43,32 +55,21 @@ function toggleNegative() {
 
 
 function calculate() {
-  // Nothing to calculate
-  if (helperDisplay.textContent === '') {
-    return;
-  }
-
-  const op = helperDisplay.textContent.slice(-1);
-  const num1 = Number(helperDisplay.textContent.slice(0, -2));
-  const num2 = Number(mainDisplay.textContent);
-
-  // Divide by zero error
-  if (op === '/' && num2 === 0) {
-    helperDisplay.textContent = '';
-    mainDisplay.textContent = 'Error';
-    return;
-  }
+  const op = helperDisplay.textContent.slice(-1) || '';
+  const num1 = Number(helperDisplay.textContent.slice(0, -2)) || '';
+  const num2 = Number(mainDisplay.textContent) || '';
 
   const result = doMaths(op, num1, num2);
-  const output = formatResult(result);
 
-  displayAnswer(output);
+  result === 'Error' ? displayResult(result) : displayResult(formatResult(result));
 }
 
 
 function doMaths(op, num1, num2) {
   let result;
-  if (op === '+') {
+  if (divideByZero(op, num2)) {
+    result = 'Error';
+  } else if (op === '+') {
     result = num1 + num2;
   } else if (op === '-') {
     result = num1 - num2;
@@ -78,39 +79,43 @@ function doMaths(op, num1, num2) {
     result = num1 / num2;
   } else if (op === '%') {
     result = num1 * (num2 / 100);
+  } else {
+    result = Number(mainDisplay.textContent) || 0;
   }
   return result;
 }
 
 
-function formatResult(num) {
-  return num
-    .toFixed(11) // To string, not too long, properly rounded
-    .replace(/0+$/, '') // Remove any trailing zeroes
-    .replace(/\.$/, ''); // Remove trailing period
+function divideByZero(op, num) {
+  return (op === '/' && num == 0);
 }
 
 
-function displayAnswer(ans) {
+function formatResult(num) {
+  return num
+    .toFixed(10) // To string, not too long, properly rounded
+    .replace(/0+$/, '') // Remove any trailing zeroes
+    .replace(/\.$/, '') // Remove trailing period
+    .slice(0, 10); // Necessary if it's a really big number with lots of decimals
+}
+
+
+function displayResult(result = '') {
   mainDisplay.classList.add('answer');
   helperDisplay.textContent = '';
-  mainDisplay.textContent = ans;
+  mainDisplay.textContent = result;
 
-  document.querySelectorAll('.calculator button').forEach(btn => {
-    btn.addEventListener('click', clearAnswer)
-  });
+  allButtons.forEach(btn => btn.addEventListener('click', clearAnswer));
 }
 
 
 function clearAnswer() {
   if (this.classList.contains('equals')) return; // Don't change anything if the user clicked equals again
 
-  document.querySelectorAll('.calculator button').forEach(btn => {
-    btn.removeEventListener('click', clearAnswer)
-  });
   mainDisplay.classList.remove('answer');
-  mainDisplay.textContent = this.classList.contains('operator') ? '' : 0;
+  allButtons.forEach(btn => btn.removeEventListener('click', clearAnswer));
 }
+
 
 buttons.digit.forEach(num => num.addEventListener('click', handleDigit));
 buttons.operator.forEach(op => op.addEventListener('click', handleOperator));
