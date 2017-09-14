@@ -6,7 +6,7 @@
  * 2. Prevent adjustments of font size after orientation changes in
  *    IE on Windows Phone and in iOS.
  */
-@import url("https://fonts.googleapis.com/css?family=Assistant:200,300");
+@import url("https://fonts.googleapis.com/css?family=Assistant:200,300,600");
 html {
   line-height: 1.15;
   /* 1 */
@@ -465,8 +465,9 @@ html {
           -ms-flex: 2 1;
               flex: 2 1;
       padding-top: 8px;
-      font-size: 2em;
-      font-weight: 300; }
+      font-size: 2em; }
+      .calculator .display .main-display.answer {
+        font-weight: 600; }
   .calculator .buttons {
     display: -webkit-box;
     display: -ms-flexbox;

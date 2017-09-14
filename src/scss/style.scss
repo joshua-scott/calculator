@@ -1,5 +1,5 @@
 @import "normalize";
-@import url('https://fonts.googleapis.com/css?family=Assistant:200,300');
+@import url('https://fonts.googleapis.com/css?family=Assistant:200,300,600');
 $background: #9DDAFC;
 $background-alt: #7E8CA3;
 $display: #113B51;
@@ -44,7 +44,9 @@ $whiteish: #e2e2e2;
       flex: 2 1;
       padding-top: 8px;
       font-size: 2em;
-      font-weight: 300;
+      &.answer {
+        font-weight: 600;
+      }
     }
   }
   .buttons {
