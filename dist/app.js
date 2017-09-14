@@ -37,28 +37,43 @@ function clear() {
 
 function toggleNegative() {
   newCalculation = false;
-  mainDisplay.textContent = `-${mainDisplay.textContent.slice(0, 10)}`;
+
+  if (mainDisplay.textContent.startsWith('-')) {
+    mainDisplay.textContent = `${mainDisplay.textContent.slice(1, 11)}`;
+  } else {
+    mainDisplay.textContent = `-${mainDisplay.textContent.slice(0, 10)}`;
+  }
 }
 
 function calculate() {
-
+  // Nothing to calculate
   if (helperDisplay.textContent === '') {
     newCalculation = true;
     return;
   }
 
   const op = helperDisplay.textContent.slice(-1);
-
-  const num1 = Number(helperDisplay.textContent.slice(0, -2)) || 0;
+  const num1 = Number(helperDisplay.textContent.slice(0, -2));
   const num2 = Number(mainDisplay.textContent);
-  console.log({
-    op,
-    num1,
-    num2
-  });
 
+  // Divide by zero error
+  if (op === '/' && num2 === 0) {
+    helperDisplay.textContent = '';
+    mainDisplay.textContent = 'Error';
+    newCalculation = true;
+    return;
+  }
+
+  const result = doMaths(op, num1, num2);
+  const output = formatResult(result);
+
+  helperDisplay.textContent = '';
+  mainDisplay.textContent = output;
+  newCalculation = true;
+}
+
+function doMaths(op, num1, num2) {
   let result;
-
   if (op === '+') {
     result = num1 + num2;
   } else if (op === '-') {
@@ -66,38 +81,17 @@ function calculate() {
   } else if (op === '×') {
     result = num1 * num2;
   } else if (op === '/') {
-    if (num2 === 0) {
-      helperDisplay.textContent = '';
-      mainDisplay.textContent = 'Error';
-      newCalculation = true;
-      return;
-    }
     result = num1 / num2;
   } else if (op === '%') {
     result = num1 * (num2 / 100);
   }
-
-  console.log({
-    result
-  });
-  const output = formatResult(result);
-  console.log({
-    output
-  });
-
-  helperDisplay.textContent = '';
-  mainDisplay.textContent = output;
-  newCalculation = true;
+  return result;
 }
 
 function formatResult(num) {
-  // Convert to string, max of 11 digits, properly rounded
-  let output = num.toFixed(11);
-  // Remove any trailing zeroes, if they exist
-  output = output.replace(/0+$/, '');
-  // Remove trailing period, if it exists
-  output = output.replace(/\.$/, '');
-  return output;
+  return num.toFixed(11) // To string, not too long, properly rounded
+  .replace(/0+$/, '') // Remove any trailing zeroes
+  .replace(/\.$/, ''); // Remove trailing period
 }
 
 buttons.digit.forEach(num => num.addEventListener('click', handleDigit));
