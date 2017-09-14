@@ -487,7 +487,6 @@ html {
       -webkit-transition: 0.5s ease-out;
       transition: 0.5s ease-out; }
       .calculator .buttons button:hover {
-        cursor: pointer;
         background: #AA7639; }
       .calculator .buttons button.num {
         color: #e2e2e2; }
