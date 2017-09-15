@@ -15,21 +15,14 @@ function calculate() {
 
 function doMaths(op, num1, num2) {
   let result;
-  if (divideByZero(op, num2)) {
-    result = 'Error';
-  } else if (op === '+') {
-    result = num1 + num2;
-  } else if (op === '-') {
-    result = num1 - num2;
-  } else if (op === '×') {
-    result = num1 * num2;
-  } else if (op === '/') {
-    result = num1 / num2;
-  } else if (op === '%') {
-    result = num1 * (num2 / 100);
-  } else {
-    result = Number(mainDisplay.textContent) || 0;
-  }
+  if (divideByZero(op, num2)) result = 'Error';
+  else if (op === '+') result = num1 + num2;
+  else if (op === '-') result = num1 - num2;
+  else if (op === '×') result = num1 * num2;
+  else if (op === '/') result = num1 / num2;
+  else if (op === '%') result = num1 * (num2 / 100);
+  else result = Number(mainDisplay.textContent) || 0;
+
   return result;
 }
 
