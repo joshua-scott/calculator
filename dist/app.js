@@ -12,7 +12,13 @@ function handleOperator() {
   // User wants to chain operations and avoid clicking Equals
   if (helperDisplay.textContent.match(/[%/×+-]$/) && mainDisplay.textContent !== '') {
     const result = calculate();
-    helperDisplay.textContent = `${result} ${this.textContent}`;
+    if (!isNaN(result)) {
+      helperDisplay.textContent = `${result} ${this.textContent}`;
+    } else {
+      helperDisplay.textContent = '';
+      mainDisplay.textContent = 'Error';
+      return;
+    }
   }
   // Or change the current operator
   else if (helperDisplay.textContent.match(/[%/×+-]$/)) {
@@ -46,7 +52,7 @@ function handleEquals() {
   const result = calculate();
 
   helperDisplay.textContent = `${helperDisplay.textContent} ${mainDisplay.textContent} =`;
-  result === 'Error' ? displayResult(result) : displayResult(formatResult(result));
+  result === 'Error' ? displayResult(result) : displayResult(formatResult(Number(result)));
 }
 
 function handleClear() {
