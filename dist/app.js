@@ -1,26 +1,11 @@
 'use strict';
 
-const mainDisplay = document.querySelector('.main-display');
-const helperDisplay = document.querySelector('.helper-display');
-const allButtons = document.querySelectorAll('.calculator button');
-const buttons = {
-  digit: document.querySelectorAll('.digit'),
-  operator: document.querySelectorAll('.operator'),
-  clear: document.querySelector('.clear'),
-  neg: document.querySelector('.neg'),
-  equals: document.querySelector('.equals')
-};
-
 function handleDigit() {
   const digit = this.textContent;
   // Is this a brand new number, or add it to the end of what's already there?
   const toDisplay = freshStart(mainDisplay) ? digit : mainDisplay.textContent + digit;
 
   mainDisplay.textContent = toDisplay.slice(0, 11); // Ensure it's not too long
-}
-
-function freshStart(display) {
-  return display.classList.contains('answer') || display.textContent == 0 && !display.textContent.match(/[\.\-]/);
 }
 
 function handleOperator() {
@@ -41,12 +26,7 @@ function handleOperator() {
   mainDisplay.textContent = '';
 }
 
-function clear() {
-  mainDisplay.textContent = 0;
-  helperDisplay.textContent = '';
-}
-
-function toggleNegative() {
+function handleNegative() {
   if (mainDisplay.textContent.startsWith('-')) {
     mainDisplay.textContent = `${mainDisplay.textContent.slice(1, 11)}`;
   } else {
@@ -67,6 +47,35 @@ function handleEquals() {
 
   helperDisplay.textContent = `${helperDisplay.textContent} ${mainDisplay.textContent} =`;
   result === 'Error' ? displayResult(result) : displayResult(formatResult(result));
+}
+
+function handleClear() {
+  mainDisplay.textContent = 0;
+  helperDisplay.textContent = '';
+}
+'use strict';
+
+const mainDisplay = document.querySelector('.main-display');
+const helperDisplay = document.querySelector('.helper-display');
+const allButtons = document.querySelectorAll('.calculator button');
+const buttons = {
+  digit: document.querySelectorAll('.digit'),
+  operator: document.querySelectorAll('.operator'),
+  clear: document.querySelector('.clear'),
+  neg: document.querySelector('.neg'),
+  equals: document.querySelector('.equals')
+};
+'use strict';
+
+buttons.digit.forEach(num => num.addEventListener('click', handleDigit));
+buttons.operator.forEach(op => op.addEventListener('click', handleOperator));
+buttons.neg.addEventListener('click', handleNegative);
+buttons.equals.addEventListener('click', handleEquals);
+buttons.clear.addEventListener('click', handleClear);
+'use strict';
+
+function freshStart(display) {
+  return display.classList.contains('answer') || display.textContent == 0 && !display.textContent.match(/[\.\-]/);
 }
 
 function calculate() {
@@ -126,10 +135,4 @@ function clearAnswer() {
 
   helperDisplay.textContent = '';
 }
-
-buttons.digit.forEach(num => num.addEventListener('click', handleDigit));
-buttons.operator.forEach(op => op.addEventListener('click', handleOperator));
-buttons.clear.addEventListener('click', clear);
-buttons.neg.addEventListener('click', toggleNegative);
-buttons.equals.addEventListener('click', handleEquals);
 //# sourceMappingURL=app.js.map
