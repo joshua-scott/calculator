@@ -12,23 +12,15 @@ const buttons = {
 };
 
 function handleDigit() {
-  // If the user said it's negative already, we should respect that decision
-  const negativeOutput = checkIfNegative(mainDisplay);
-
   const digit = this.textContent;
   // Is this a brand new number, or add it to the end of what's already there?
   const toDisplay = freshStart(mainDisplay) ? digit : mainDisplay.textContent + digit;
 
   mainDisplay.textContent = toDisplay.slice(0, 11); // Ensure it's not too long
-  if (negativeOutput) toggleNegative();
 }
 
 function freshStart(display) {
-  return display.classList.contains('answer') || display.textContent == 0 && !display.textContent.includes('.');
-}
-
-function checkIfNegative(display) {
-  return display.textContent.startsWith('-') && mainDisplay.classList.contains('answer');
+  return display.classList.contains('answer') || display.textContent == 0 && !display.textContent.match(/[\.\-]/);
 }
 
 function handleOperator() {
@@ -46,6 +38,11 @@ function toggleNegative() {
     mainDisplay.textContent = `${mainDisplay.textContent.slice(1, 11)}`;
   } else {
     mainDisplay.textContent = `-${mainDisplay.textContent.slice(0, 10)}`;
+  }
+
+  // If it was 0 and user clicked neg, don't show the 0 anymore
+  if (Number(mainDisplay.textContent) === 0) {
+    mainDisplay.textContent = `${mainDisplay.textContent.slice(0, -1)}`;
   }
 }
 
