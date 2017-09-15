@@ -26,7 +26,7 @@ function freshStart(display) {
 function handleOperator() {
   // User wants to chain operations and avoid clicking Equals
   if (helperDisplay.textContent.match(/[%/×+-]$/) && mainDisplay.textContent !== '') {
-    const result = chainCalculation();
+    const result = calculate();
     helperDisplay.textContent = `${result} ${this.textContent}`;
   }
   // Or change the current operator
@@ -39,14 +39,6 @@ function handleOperator() {
       }
 
   mainDisplay.textContent = '';
-}
-
-function chainCalculation() {
-  const op = helperDisplay.textContent.slice(-1) || '';
-  const num1 = Number(helperDisplay.textContent.slice(0, -2)) || '';
-  const num2 = Number(mainDisplay.textContent) || '';
-
-  return doMaths(op, num1, num2);
 }
 
 function clear() {
@@ -67,15 +59,22 @@ function toggleNegative() {
   }
 }
 
+function handleEquals() {
+  // If they're just clicking again, we don't need to do anything
+  if (helperDisplay.textContent.endsWith('=')) return;
+
+  const result = calculate();
+
+  helperDisplay.textContent = `${helperDisplay.textContent} ${mainDisplay.textContent} =`;
+  result === 'Error' ? displayResult(result) : displayResult(formatResult(result));
+}
+
 function calculate() {
   const op = helperDisplay.textContent.slice(-1) || '';
   const num1 = Number(helperDisplay.textContent.slice(0, -2)) || '';
   const num2 = Number(mainDisplay.textContent) || '';
 
-  const result = doMaths(op, num1, num2);
-
-  helperDisplay.textContent = `${helperDisplay.textContent} ${mainDisplay.textContent} =`;
-  result === 'Error' ? displayResult(result) : displayResult(formatResult(result));
+  return doMaths(op, num1, num2);
 }
 
 function doMaths(op, num1, num2) {
@@ -132,5 +131,5 @@ buttons.digit.forEach(num => num.addEventListener('click', handleDigit));
 buttons.operator.forEach(op => op.addEventListener('click', handleOperator));
 buttons.clear.addEventListener('click', clear);
 buttons.neg.addEventListener('click', toggleNegative);
-buttons.equals.addEventListener('click', calculate);
+buttons.equals.addEventListener('click', handleEquals);
 //# sourceMappingURL=app.js.map
