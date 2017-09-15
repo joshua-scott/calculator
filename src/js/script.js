@@ -30,12 +30,13 @@ function handleOperator() {
   if (helperDisplay.textContent.match(/[%/×+-]$/) && mainDisplay.textContent !== '') {
     const result = chainCalculation();
     helperDisplay.textContent = `${result} ${this.textContent}`;
-
-  } else if (helperDisplay.textContent.match(/[%/×+-]$/)) {
-    // Or change the current operator
+  }
+  // Or change the current operator
+  else if (helperDisplay.textContent.match(/[%/×+-]$/)) {
     helperDisplay.textContent = `${helperDisplay.textContent.slice(0, -1)} ${this.textContent}`;
-  } else {
-    // Or just add this operator
+  }
+  // Or just add this operator
+  else {
     helperDisplay.textContent = `${mainDisplay.textContent} ${this.textContent}`;
   }
 
@@ -130,9 +131,13 @@ function displayResult(result = '') {
 function clearAnswer() {
   if (this.classList.contains('equals')) return; // Don't change anything if the user clicked equals again
 
-  helperDisplay.textContent = '';
   mainDisplay.classList.remove('answer');
   allButtons.forEach(btn => btn.removeEventListener('click', clearAnswer));
+
+  // If they're doing another calculation, don't mess it up by clearing the display
+  if (this.classList.contains('operator')) return;
+
+  helperDisplay.textContent = '';
 }
 
 
