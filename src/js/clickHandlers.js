@@ -1,5 +1,15 @@
-function handleDigit() {
-  const digit = this.textContent;
+function handleKey(e) {
+  if (e.key >= 0 && e.key <= 9) handleDigit(e.key);
+  else if (e.key.match(/^[%/*+-]$/)) handleOperator(e.key);
+  else if (e.key === '.') handleNegative();
+  else if (e.key.match(/^=|Enter$/)) handleEquals();
+  else if (e.key.match(/^Backspace|Delete|C$/i)) handleClear();
+}
+
+function handleDigit(key) {
+  // const digit = (key >= 0 && key <= 9) ? key : this.textContent;
+  const digit = typeof key === 'string' ? key : this.textContent;
+
   // Is this a brand new number, or add it to the end of what's already there?
   const toDisplay = freshStart(mainDisplay) ? digit : mainDisplay.textContent + digit;
 
@@ -7,12 +17,16 @@ function handleDigit() {
 }
 
 
-function handleOperator() {
+function handleOperator(key) {
+  let operator = typeof key === 'string' ? key : this.textContent;
+
+  if (operator === '*') operator = '×';
+
   // User wants to chain operations and avoid clicking Equals
-  if (helperDisplay.textContent.match(/[%/×+-]$/) && mainDisplay.textContent !== '') {
+  if (helperDisplay.textContent.match(/^[%/×+-]$/) && mainDisplay.textContent !== '') {
     const result = calculate();
     if (!isNaN(result)) {
-      helperDisplay.textContent = `${result} ${this.textContent}`;
+      helperDisplay.textContent = `${result} ${operator}`;
     } else {
       helperDisplay.textContent = '';
       mainDisplay.textContent = 'Error';
@@ -20,12 +34,12 @@ function handleOperator() {
     }
   }
   // Or change the current operator
-  else if (helperDisplay.textContent.match(/[%/×+-]$/)) {
-    helperDisplay.textContent = `${helperDisplay.textContent.slice(0, -1)} ${this.textContent}`;
+  else if (helperDisplay.textContent.match(/^[%/×+-]$/)) {
+    helperDisplay.textContent = `${helperDisplay.textContent.slice(0, -1)} ${operator}`;
   }
   // Or just add this operator
   else {
-    helperDisplay.textContent = `${mainDisplay.textContent} ${this.textContent}`;
+    helperDisplay.textContent = `${mainDisplay.textContent} ${operator}`;
   }
 
   mainDisplay.textContent = '';
