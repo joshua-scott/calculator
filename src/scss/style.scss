@@ -1,17 +1,18 @@
 @import "normalize";
 @import url('https://fonts.googleapis.com/css?family=Assistant:200,300,600');
-$background: #9DDAFC;
-$background-alt: #7E8CA3;
+$background-orange: #FE802FCC;
+$background-orange-faded: transparentize(#FE802F, .3);
+$background-blue-alt: #9DDAFC;
+$background-purple-alt: #FE80ee85;
 $display: #113B51;
 $button: #477187;
-$button-alt: #AA7639;
+$button-alt: #FE802F;
 $button-text: #FAE25D;
-$whiteish: #e2e2e2;
+$whiteish: #E2E2E2;
 // $black: #1c1c1c;
 // $dark-grey: #525258;
-// $orange: #ff6929;
 .wrapper {
-  background: $background-alt;
+  background: $background-orange-faded;
   height: 100vh;
   display: flex;
   flex-direction: column;
@@ -60,9 +61,9 @@ $whiteish: #e2e2e2;
       height: 45px;
       background: $button;
       color: $button-text;
-      transition: 0.5s ease-out;
+      transition: 0.4s ease;
       &:hover {
-        background: $button-alt;
+        background: $display;
       }
       &.num {
         color: $whiteish;
