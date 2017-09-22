@@ -81,7 +81,6 @@ const buttons = {
   neg: document.querySelector('.neg'),
   equals: document.querySelector('.equals')
 };
-'use strict';
 
 buttons.digit.forEach(num => num.addEventListener('click', handleDigit));
 buttons.operator.forEach(op => op.addEventListener('click', handleOperator));
