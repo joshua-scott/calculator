@@ -7,7 +7,6 @@ function handleKey(e) {
 }
 
 function handleDigit(key) {
-  // const digit = (key >= 0 && key <= 9) ? key : this.textContent;
   const digit = typeof key === 'string' ? key : this.textContent;
 
   // Is this a brand new number, or add it to the end of what's already there?
@@ -23,7 +22,7 @@ function handleOperator(key) {
   if (operator === '*') operator = '×';
 
   // User wants to chain operations and avoid clicking Equals
-  if (helperDisplay.textContent.match(/^[%/×+-]$/) && mainDisplay.textContent !== '') {
+  if (helperDisplay.textContent.match(/[%/×+-]$/) && mainDisplay.textContent !== '') {
     const result = calculate();
     if (!isNaN(result)) {
       helperDisplay.textContent = `${result} ${operator}`;
@@ -34,7 +33,7 @@ function handleOperator(key) {
     }
   }
   // Or change the current operator
-  else if (helperDisplay.textContent.match(/^[%/×+-]$/)) {
+  else if (helperDisplay.textContent.match(/[%/×+-]$/)) {
     helperDisplay.textContent = `${helperDisplay.textContent.slice(0, -1)} ${operator}`;
   }
   // Or just add this operator
